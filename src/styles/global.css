@@ -155,6 +155,7 @@ body {
   display: grid;
   grid-template-rows: auto auto 1fr;
   height: 100vh;
+  max-height: 100vh;
   overflow: hidden;
   background-color: var(--bg-primary);
   background-size: cover;
@@ -462,30 +463,66 @@ body {
 .hand-and-controls {
   display: flex;
   flex-direction: column;
-  padding: 20px 24px 20px;
-  gap: 14px;
+  padding: 12px 24px 12px;
+  gap: 10px;
   min-height: 0;
+  overflow: hidden;
   /* Gap 5: subtle warm table surface */
   background: linear-gradient(180deg, transparent 0%, rgba(40,30,20,0.3) 100%);
 }
 
 /* ========================================
-   Hand Area
+   Hand Area (Gap A: fan layout)
    ======================================== */
-.hand-area {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 12px;
-  overflow-y: auto;
-  padding: 12px 8px;
+.hand-area-wrapper {
   flex: 1;
   min-height: 0;
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
-.hand-area::-webkit-scrollbar { width: 6px; }
-.hand-area::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 3px; }
-.hand-area::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 3px; }
+.hand-area-fan {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 20px 24px 8px;
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: visible;
+  perspective: 800px;
+}
+
+.hand-area-fan::-webkit-scrollbar { height: 4px; }
+.hand-area-fan::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+.hand-area-fan::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 2px; }
+
+.hand-card-slot {
+  width: 180px;
+  flex-shrink: 0;
+  margin: 0 -10px; /* slight overlap */
+  transition: transform 0.2s ease, z-index 0s;
+  transform-origin: bottom center;
+}
+
+.hand-card-slot:hover {
+  transform: translateY(-30px) scale(1.1) rotate(0deg) !important;
+  z-index: 100 !important;
+}
+
+.hand-card-slot .card-view {
+  height: 260px;
+}
+
+.hand-card-slot .card-art {
+  height: 140px;
+}
+
+.hand-card-slot .card-art-placeholder {
+  height: 140px;
+}
 
 /* ========================================
    Card View (Phase 1: faction strip, rarity glow, Phase 3: textures)
@@ -786,6 +823,125 @@ body {
 .ai-rank-name { flex: 1; }
 .ai-rank-reason { color: var(--text-muted); font-size: 0.68rem; }
 .ai-rank-score { font-weight: 600; min-width: 28px; text-align: right; color: var(--text-primary); }
+
+/* ========================================
+   Card Preview (Gap D: hover detail)
+   ======================================== */
+.card-preview-overlay {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  pointer-events: none;
+  animation: preview-fade-in 0.15s ease-out;
+}
+
+@keyframes preview-fade-in {
+  from { opacity: 0; transform: translateX(-50%) scale(0.9); }
+  to { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+.card-preview {
+  width: 280px;
+  background: var(--bg-surface);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.8), 0 0 24px rgba(0,0,0,0.5);
+}
+
+.card-rarity-普通.card-preview { border-color: #5a5d63; }
+.card-rarity-稀有.card-preview { border-color: var(--color-gold); box-shadow: 0 16px 48px rgba(0,0,0,0.8), 0 0 20px rgba(212,175,55,0.3); }
+.card-rarity-史诗.card-preview { border-color: var(--color-epic); box-shadow: 0 16px 48px rgba(0,0,0,0.8), 0 0 24px rgba(168,85,247,0.4); }
+
+.card-preview-art {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-preview-body {
+  padding: 14px 16px 16px;
+}
+
+.card-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.card-preview-cost {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg, #5b21b6, #7c3aed);
+  color: #fff; font-weight: 700; font-size: 0.95rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-preview-name {
+  font-family: var(--font-title);
+  font-size: 1.2rem;
+  font-weight: 700;
+  flex: 1;
+}
+
+.card-preview-type {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.1);
+  color: var(--text-secondary);
+}
+
+.card-preview-faction {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.card-preview-desc {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.card-preview-keywords {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.card-preview-kw {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(212,175,55,0.15);
+  color: var(--color-gold);
+  border: 1px solid rgba(212,175,55,0.3);
+}
+
+.card-preview-rarity {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* ========================================
+   Boss Intent SVG Icons (Gap C)
+   ======================================== */
+.intent-icons-multi {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.boss-intent-icon svg {
+  filter: drop-shadow(0 0 4px currentColor);
+}
 
 /* ========================================
    Game Over Page (Phase 3: ceremony)

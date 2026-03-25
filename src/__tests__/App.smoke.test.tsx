@@ -59,7 +59,7 @@ describe('App smoke tests', () => {
     fireEvent.click(screen.getAllByText('迎战')[0]);
     // CardView renders cards — find at least one card by its cost badge (0 or 1)
     // The hand has cards; HandArea renders them so at least one card name appears
-    const handArea = document.querySelector('.hand-area');
+    const handArea = document.querySelector('.hand-area-fan');
     expect(handArea).not.toBeNull();
     // There should be at least one .card-view element
     const cardViews = document.querySelectorAll('.card-view');

@@ -18,13 +18,27 @@ const BOSS_BACKGROUNDS: Record<string, string> = {
   ancient_wyrm: '/assets/backgrounds/battlefield_cavern_0.jpg',
 };
 
-function getIntentIcon(boss: BossState): string {
-  const intent = boss.currentIntent;
-  if (!intent) return '';
-  if (intent.action === 'attack') return '\u2694\uFE0F'; // swords
-  if (intent.action === 'armor') return '\uD83D\uDEE1\uFE0F'; // shield
-  if (intent.action === 'multi') return '\u2694\uFE0F\uD83D\uDEE1\uFE0F'; // both
-  return '';
+function IntentIcon({ action }: { action: string | undefined }) {
+  if (!action) return null;
+
+  const SwordSvg = () => (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e53e3e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14.5 2L20 7.5 8 19.5 2 22l2.5-6L16.5 4z" />
+      <path d="M16 8L2 22" opacity="0.3" />
+      <path d="M17.5 6.5l-1 1" />
+    </svg>
+  );
+
+  const ShieldSvg = () => (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2l8 4v6c0 5.25-3.5 9.5-8 11-4.5-1.5-8-5.75-8-11V6l8-4z" />
+    </svg>
+  );
+
+  if (action === 'attack') return <SwordSvg />;
+  if (action === 'armor') return <ShieldSvg />;
+  if (action === 'multi') return <span className="intent-icons-multi"><SwordSvg /><ShieldSvg /></span>;
+  return null;
 }
 
 function formatIntent(boss: BossState): string {
@@ -100,7 +114,7 @@ export const BossArea: React.FC<BossAreaProps> = ({ boss }) => {
 
       <div className="boss-intent-block">
         <div className="boss-intent-label">意图</div>
-        <div className="boss-intent-icon">{getIntentIcon(boss)}</div>
+        <div className="boss-intent-icon"><IntentIcon action={boss.currentIntent?.action} /></div>
         <div className="boss-intent-value">{formatIntent(boss)}</div>
         <div className="boss-intent-type">{intentLabel(boss)}</div>
         {boss.silenceReduction > 0 && (
