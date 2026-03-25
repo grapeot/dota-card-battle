@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import type { Boss } from '../engine/types';
 
 interface BossSelectProps {
@@ -23,11 +23,34 @@ function describeIntent(boss: Boss): string {
   return parts.join(' → ');
 }
 
+function useIsMobile(): boolean {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
+}
+
 export const BossSelect: React.FC<BossSelectProps> = ({ bosses, onSelect }) => {
+  const isMobile = useIsMobile();
+  const [dismissed, setDismissed] = useState(false);
+
   return (
     <div className="boss-select-page">
       <h1>远古战场</h1>
       <p className="subtitle">选择你的对手，开始战斗</p>
+
+      {isMobile && !dismissed && (
+        <div className="mobile-notice">
+          <p>本游戏针对桌面浏览器设计，建议在电脑上打开以获得最佳体验。</p>
+          <button className="mobile-notice-btn" onClick={() => setDismissed(true)}>
+            继续使用手机
+          </button>
+        </div>
+      )}
       <div className="boss-cards-grid">
         {bosses.map(boss => (
           <div key={boss.id} className={`boss-card ${boss.difficulty}`}>

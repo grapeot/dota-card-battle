@@ -1027,3 +1027,38 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(59,130,246,0.4);
 }
+
+/* ========================================
+   Mobile Notice
+   ======================================== */
+.mobile-notice {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 10px;
+  padding: 16px 24px;
+  margin-bottom: 32px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.mobile-notice p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.mobile-notice-btn {
+  background: transparent;
+  border: 1px solid var(--text-muted);
+  border-radius: 8px;
+  padding: 8px 20px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.mobile-notice-btn:hover {
+  opacity: 0.7;
+}
