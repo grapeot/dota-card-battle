@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "version": "2.0",
+    "design_targets": {
+      "win_rate_range": [40, 70],
+      "avg_turns_range": [7, 12],
+      "description": "Boss 设计目标：玩家胜率 40-70%，平均 7-12 回合结束"
+    },
+    "convergence_notes": "经过 5 轮迭代收敛。cycle 类 Boss 受限于护甲清零机制和 AI 防御倾向，难以压低胜率到 70% 以下；escalate 类 Boss 后期攻击力爆炸容易 0% 胜率。当前配置在 medium 难度下接近目标范围，easy 和 hard 作为上下界保留。AI 出牌策略的防御偏向是主要影响因子。"
+  },
+  "bosses": [
+    {
+      "id": "forest_troll",
+      "name": "林地巨魔",
+      "difficulty": "easy",
+      "hp": 90,
+      "behavior": {
+        "type": "cycle",
+        "description": "简单循环：轻击 → 重击",
+        "sequence": [
+          { "action": "attack", "value": 15 },
+          { "action": "attack", "value": 20 }
+        ]
+      }
+    },
+    {
+      "id": "shadow_warden",
+      "name": "暗影守卫",
+      "difficulty": "medium",
+      "hp": 110,
+      "behavior": {
+        "type": "cycle",
+        "description": "三阶段循环：攻击 → 蓄甲+攻击 → 重击",
+        "sequence": [
+          { "action": "attack", "value": 16 },
+          { "action": "multi", "attack": 12, "armor": 12 },
+          { "action": "attack", "value": 24 }
+        ]
+      }
+    },
+    {
+      "id": "ancient_wyrm",
+      "name": "远古巨蛇",
+      "difficulty": "hard",
+      "hp": 100,
+      "behavior": {
+        "type": "cycle",
+        "description": "三阶段循环：蓄甲+攻击 → 重击 → 猛攻",
+        "sequence": [
+          { "action": "multi", "attack": 10, "armor": 12 },
+          { "action": "attack", "value": 19 },
+          { "action": "attack", "value": 23 }
+        ]
+      }
+    }
+  ]
+}
