@@ -2,6 +2,8 @@
 
 一个基于 Dota 世界观的单人 Roguelike 卡牌战斗原型，使用 React + TypeScript 构建。
 
+**[在线试玩](https://dota-card-battle.ai-builders.space/)**
+
 ![战斗界面截图](docs/screenshot.jpg)
 
 ## 游戏特色
