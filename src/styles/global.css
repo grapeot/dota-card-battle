@@ -76,6 +76,7 @@ body {
   justify-content: center;
   min-height: 100vh;
   padding: 40px 20px;
+  overflow-y: auto;
   background:
     radial-gradient(ellipse at 50% 30%, rgba(212,175,55,0.06) 0%, transparent 60%),
     linear-gradient(135deg, #050810 0%, #0a0e1a 50%, #0d1320 100%);
@@ -1061,4 +1062,28 @@ body {
 
 .mobile-notice-btn:hover {
   opacity: 0.7;
+}
+
+/* Mobile layout: allow scroll, start from top */
+@media (max-width: 767px) {
+  .boss-select-page {
+    justify-content: flex-start;
+    min-height: auto;
+    padding: 24px 16px;
+    overflow-y: auto;
+  }
+
+  .boss-select-page h1 {
+    font-size: 2rem;
+  }
+
+  .boss-cards-grid {
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .boss-card {
+    width: 100%;
+  }
 }
